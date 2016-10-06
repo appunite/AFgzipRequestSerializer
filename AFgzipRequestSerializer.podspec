@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'AFNetworking', '~> 2.0'
-  s.libraries  'libcompression'
+  s.framework  'libcompression'
 end
