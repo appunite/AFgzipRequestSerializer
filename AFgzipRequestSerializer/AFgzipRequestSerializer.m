@@ -22,7 +22,8 @@
 
 #import "AFgzipRequestSerializer.h"
 
-#import "NSData+Godzippa.h"
+//gzip
+#import "NSData+LAMCompression.h"
 
 @interface AFgzipRequestSerializer ()
 @property (readwrite, nonatomic, strong) id <AFURLRequestSerialization> serializer;
@@ -54,15 +55,15 @@
 
     if (!serializationError && mutableRequest.HTTPBody) {
         NSError *compressionError = nil;
-        NSData *compressedData = [mutableRequest.HTTPBody dataByGZipCompressingWithError:&compressionError];
+        NSData *compressedData = [mutableRequest.HTTPBody lam_compressedDataUsingCompression:LAMCompressionZLIB];
 
-        if (compressedData && !compressionError) {
+        if (compressedData) {// && !compressionError) {
             [mutableRequest setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
             [mutableRequest setHTTPBody:compressedData];
-        } else {
-            if (error) {
-                *error = compressionError;
-            }
+        // } else {
+        //     if (error) {
+        //         *error = compressionError;
+        //     }
         }
     } else {
         if (error) {
